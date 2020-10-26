@@ -8,7 +8,7 @@ The “Contact Data Table” demo component offers a way to display a list of co
 - Inline Editing
 - Hyperlink to records
 
-## LWC datatable demo compoent - example n°1
+## LWC datatable demo compoent - example n°2
 The "User Territories" demo component offers a way to assign a territory to an account based on the assigned territories of the current user
 
 # Features 
