@@ -7,3 +7,11 @@ The “Contact Data Table” demo component offers a way to display a list of co
  - Display list of contacts
  - Inline Editing
  - Hyperlink to records
+
+ ## Description of Files and Directories
+The "User Territories" demo component offers a way to assign a territory to an account based on the assigned territories of the current user
+
+# Features 
+ - Display list of territories assigned to the current user and not already assign to an account
+ - Assign the selected territory to an account
+ - Refresh the list of territories/component while listing to a platform events 

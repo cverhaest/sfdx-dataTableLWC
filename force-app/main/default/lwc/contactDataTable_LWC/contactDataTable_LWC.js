@@ -17,6 +17,7 @@ const COLS = [
     { label: 'Phone', fieldName: 'Phone', type: 'phone', editable: true },
     { label: 'Email', fieldName: 'Email', type: 'email', editable: true}
 ];
+
 export default class DatatableUpdateExample extends LightningElement {
 
     @track error;

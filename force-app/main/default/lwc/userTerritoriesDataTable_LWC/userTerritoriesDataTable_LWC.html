@@ -1,0 +1,17 @@
+<template>
+    <lightning-card title="User Territories" icon-name="utility:resource_territory">
+        <div class="slds-m-around_medium">
+            <template if:true={userTerritories}>
+                <lightning-datatable
+                    key-field="TerritoryId"
+                    data={userTerritories}
+                    columns={columns}
+                    onrowselection={handleRowSelection}>
+                </lightning-datatable>
+            </template>            
+        </div>  
+        <div class="slds-align_absolute-center">
+            <lightning-button name="add" label="Add" variant="border-filled" onclick={handleSave} alternative-text="Add"></lightning-button>
+        </div>
+    </lightning-card>
+</template>

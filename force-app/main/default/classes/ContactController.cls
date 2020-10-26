@@ -1,4 +1,4 @@
-public with sharing class ContactController {
+public without sharing class ContactController {
 
     @AuraEnabled(cacheable=true)
     public static List<DataTableWrapper> getContactList() {
@@ -18,6 +18,7 @@ public with sharing class ContactController {
             obj.LastName = oContact.LastName;
             obj.LastNameLink = '/' + oContact.Id;
             obj.Title = oContact.Title;
+            obj.Phone = oContact.Phone;
             obj.Email = oContact.Email;
             response.add(obj);
         }
@@ -36,6 +37,8 @@ public with sharing class ContactController {
         public String LastNameLink {get;set;}
         @AuraEnabled
         public String Title {get;set;}
+        @AuraEnabled
+        public String Phone {get;set;}        
         @AuraEnabled
         public String Email {get;set;}
     }

@@ -2,20 +2,16 @@
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <isExposed>true</isExposed>
     <masterLabel>Inline editing datatable Demo Web Component (LWC)</masterLabel>
-    <description>This is an "Inline Editing Datatable" example</description>  
+    <description>This is an &quot;Inline Editing Datatable&quot; example</description>
     <targets>
-        <!-- Configure a Component for Lightning App Builder -->
-        <!-- https://developer.salesforce.com/docs/component-library/documentation/lwc/lwc.use_config_for_app_builder -->  
-        <target>lightning__RecordPage</target>
+        <!-- Configure a Component for Lightning App Builder --><!-- https://developer.salesforce.com/docs/component-library/documentation/lwc/lwc.use_config_for_app_builder --><target>lightning__RecordPage</target>
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__RecordPage">
-            <!-- Configure Your Component for Different Form Factors -->
-            <!-- https://developer.salesforce.com/docs/component-library/documentation/lwc/lwc.use_config_form_factors -->
-            <supportedFormFactors>
-                <supportedFormFactor type="Small" />
-                <supportedFormFactor type="Large" />
-              </supportedFormFactors>
+            <!-- Configure Your Component for Different Form Factors --><!-- https://developer.salesforce.com/docs/component-library/documentation/lwc/lwc.use_config_form_factors --><supportedFormFactors>
+                <supportedFormFactor type="Small"/>
+                <supportedFormFactor type="Large"/>
+            </supportedFormFactors>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>
