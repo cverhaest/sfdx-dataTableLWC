@@ -23,6 +23,7 @@ export default class UserTerritoriesDataTable_LWC extends LightningElement {
     @track columns = COLS;
     @api recordId;
     @api singleRowSelection;
+    @track maxRowSelection;
     @track userTerritories = [{}];
     @track selectedRows = [{}];
     currentUserId = UserId;
@@ -30,26 +31,12 @@ export default class UserTerritoriesDataTable_LWC extends LightningElement {
     subscription = {};    
     channelName = '/event/Refresh_Event__e';
 
-
-    /*@wire(getUserTerritoriesList)
-    wiredGetUserTerritoriesList(result) {
-        console.log('### UserTerritoriesDataTable_LWC - wiredGetUserTerritoriesList() - START');
-        console.log('### UserTerritoriesDataTable_LWC - wiredGetUserTerritoriesList() - result:' + result);
-
-        if(result){
-            this.userTerritories = result;
-            this.error = null;            
-        }
-        else if(error) {
-            this.userTerritories = [];
-            this.error = error;
-        }
-        
-        console.log('### UserTerritoriesDataTable_LWC - wiredGetUserTerritoriesList() - END');
-    }*/
-
     connectedCallback() {
         console.log('### UserTerritoriesDataTable_LWC - connectedCallback() - START : recordId:' + this.recordId);
+
+        if(this.singleRowSelection){
+            this.maxRowSelection = 1;
+        }
 
         // Recover Current User Territories
         this.getUserTerritoriesListFct();
@@ -91,19 +78,6 @@ export default class UserTerritoriesDataTable_LWC extends LightningElement {
         for (let i = 0; i < this.selectedRows.length; i++){
             console.log('### UserTerritoriesDataTable_LWC - handleRowSelection() - selectedRows[i]:' + this.selectedRows[i].TerritoryId + ' - ' + this.selectedRows[i].TerritoryName);
         }        
-        
-        console.log('### UserTerritoriesDataTable_LWC - handleRowSelection() - START : singleRowSelection:' + this.singleRowSelection);
-
-        if(this.singleRowSelection){
-            // Ensure Single Row Selection
-            if(this.selectedRows.length>1)
-            {
-                var el = this.template.querySelector('lightning-datatable');
-                this.selectedRows=el.selectedRows=el.selectedRows.slice(1);
-                event.preventDefault();
-                return;
-            }
-        }
     }  
 
     handleSave(e) {

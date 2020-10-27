@@ -11,6 +11,10 @@
     <targetConfigs>
         <targetConfig targets="lightning__RecordPage">
             <property name="singleRowSelection" type="Boolean" label="Single Row Selection?" default="true"/>
+            <supportedFormFactors>
+                <supportedFormFactor type="Small" />
+                <supportedFormFactor type="Large" />
+            </supportedFormFactors>
         </targetConfig>
         <targetConfig targets="lightning__FlowScreen">
             <property name="recordId" type="String" label="Record Id"/>
