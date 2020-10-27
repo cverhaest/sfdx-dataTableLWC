@@ -23,6 +23,7 @@ export default class UserTerritoriesDataTable_LWC extends LightningElement {
     @track columns = COLS;
     @api recordId;
     @api singleRowSelection;
+    @api checkRules;
     @track maxRowSelection;
     @track userTerritories = [{}];
     @track selectedRows = [{}];
@@ -95,16 +96,30 @@ export default class UserTerritoriesDataTable_LWC extends LightningElement {
         if(territoryIds){
             // Add User Territories
             
-            addUserTerritories({ AccountId : this.recordId, lTerritories : territoryIds})
+            addUserTerritories({ AccountId : this.recordId, lTerritories : territoryIds, checkRules : this.checkRules})
             .then(result => {
-                // Show success message
-                this.dispatchEvent(
-                    new ShowToastEvent({
-                        title: 'Success',
-                        message: 'User Territory Assigned to this Account',
-                        variant: 'success',
-                    }),
-                );
+                console.log('### UserTerritoriesDataTable_LWC - handleSave() - result:' + result);
+
+                if(result){
+                    // Show success message
+                    this.dispatchEvent(
+                        new ShowToastEvent({
+                            title: 'Success',
+                            message: 'User Territory Assigned to this Account',
+                            variant: 'success',
+                        }),
+                    );
+                }
+                else{
+                    // Show warning message
+                    this.dispatchEvent(
+                        new ShowToastEvent({
+                            title: 'Warning',
+                            message: 'Selected Territories cannot be assigned to this Account',
+                            variant: 'warning',
+                        }),
+                    );                    
+                }
             })
             .catch(error => {
                 this.error = error;

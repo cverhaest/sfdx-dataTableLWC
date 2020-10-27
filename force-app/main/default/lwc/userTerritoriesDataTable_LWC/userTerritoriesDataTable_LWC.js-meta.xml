@@ -11,6 +11,7 @@
     <targetConfigs>
         <targetConfig targets="lightning__RecordPage">
             <property name="singleRowSelection" type="Boolean" label="Single Row Selection?" default="true"/>
+            <property name="checkRules" type="Boolean" label="Check Territory Assignment Rules?" default="true"/>
             <supportedFormFactors>
                 <supportedFormFactor type="Small" />
                 <supportedFormFactor type="Large" />
@@ -19,6 +20,7 @@
         <targetConfig targets="lightning__FlowScreen">
             <property name="recordId" type="String" label="Record Id"/>
             <property name="singleRowSelection" type="Boolean" label="Single Row Selection?" default="true"/>
+            <property name="checkRules" type="Boolean" label="Check Territory Assignment Rules?" default="true"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

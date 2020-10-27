@@ -29,11 +29,55 @@ public with sharing class UserTerritoriesController {
     }
 
     @AuraEnabled
-    public static void addUserTerritories(Id AccountId, List<Id> lTerritories) {
+    public static boolean addUserTerritories(Id AccountId, List<Id> lTerritories, boolean checkRules) {
         system.debug('### CVER - UserTerritoriesController - addUserTerritoriesToAccount - START - AccountId:' + AccountId + ' - lTerritories.size():' + lTerritories.size());
 
-        addUserTerritoriesAsync(AccountId, lTerritories);
+        Boolean bResponse = true;
+        
+        // Check Rules (just for demo purpose)
+        if(checkRules){
+            bResponse = checkTerritories(AccountId, lTerritories);
+        }
+
+        if(bResponse){
+            addUserTerritoriesAsync(AccountId, lTerritories);
+            return true;
+        }
+        else{
+            return false;
+        }
     }    
+
+    // JUST AS AN EXAMPLE HERE, SHOULD BE BASED ON RuleTerritory2Association, ObjectTerritory2AssignmentRule, ObjectTerritory2AssignmentRuleItem objects
+    // https://developer.salesforce.com/docs/atlas.en-us.api.meta/api/sforce_api_erd_territory2.htm
+    static boolean checkTerritories(Id AccountId, List<Id> lTerritories) {
+        system.debug('### CVER - UserTerritoriesController - checkTerritories - START - AccountId:' + AccountId + ' - lTerritories.size():' + lTerritories.size());
+
+        boolean bResponse = false;
+
+        if(!lTerritories.isEmpty()){
+            // Recover Territory Name
+            list<Territory2> lTerritory2 = [SELECT DeveloperName FROM Territory2 WHERE Id IN :lTerritories];
+            
+            for(Territory2 oTerritory2:lTerritory2){
+                system.debug('### CVER - UserTerritoriesController - checkTerritories - oTerritory2.DeveloperName:' + oTerritory2.DeveloperName);
+
+                String sCountry = oTerritory2.DeveloperName.split('_')[0];
+                String sActivity = oTerritory2.DeveloperName.split('_')[1];
+
+                system.debug('### CVER - UserTerritoriesController - checkTerritories - sCountry:' + sCountry + ' - sActivity:' + sActivity);
+
+                // Should be bulkified
+                for(Account oAccount:[SELECT Id FROM ACCOUNT WHERE Id = :AccountId AND BillingCountry = :sCountry AND Activity__c includes (:sActivity)]){
+                    bResponse = true;    
+                }
+            }
+        }
+        
+        system.debug('### CVER - UserTerritoriesController - checkTerritories - bResponse:' + bResponse);
+
+        return bResponse;
+    }     
 
     @future
     static void addUserTerritoriesAsync(Id AccountId, List<Id> lTerritories) {
