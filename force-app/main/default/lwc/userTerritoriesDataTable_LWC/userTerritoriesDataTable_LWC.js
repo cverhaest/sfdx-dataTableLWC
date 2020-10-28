@@ -22,7 +22,7 @@ export default class UserTerritoriesDataTable_LWC extends LightningElement {
     @track error;
     @track columns = COLS;
     @api recordId;
-    @api singleRowSelection;
+    @api singleRowSelection=false;
     @api checkRules;
     @track maxRowSelection;
     @track userTerritories = [{}];
@@ -100,12 +100,21 @@ export default class UserTerritoriesDataTable_LWC extends LightningElement {
             .then(result => {
                 console.log('### UserTerritoriesDataTable_LWC - handleSave() - result:' + result);
 
+                let message = 'Selected ';
+                
+                if(this.singleRowSelection){
+                    message +=  'Territory ';
+                }
+                else{
+                    message +=  'Territories ';
+                }
+
                 if(result){
                     // Show success message
                     this.dispatchEvent(
                         new ShowToastEvent({
                             title: 'Success',
-                            message: 'User Territory Assigned to this Account',
+                            message: message + 'correctly assigned to this Account!',
                             variant: 'success',
                         }),
                     );
@@ -118,7 +127,7 @@ export default class UserTerritoriesDataTable_LWC extends LightningElement {
                     this.dispatchEvent(
                         new ShowToastEvent({
                             title: 'Warning',
-                            message: 'Selected Territory cannot be assigned to this Account',
+                            message: message + 'cannot be assigned to this Account!',
                             variant: 'warning',
                         }),
                     );                    

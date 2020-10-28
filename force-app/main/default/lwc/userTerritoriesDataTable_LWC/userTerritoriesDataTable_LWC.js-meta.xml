@@ -13,8 +13,8 @@
             <property name="singleRowSelection" type="Boolean" label="Single Row Selection?" default="true"/>
             <property name="checkRules" type="Boolean" label="Check Territory Assignment Rules?" default="true"/>
             <supportedFormFactors>
-                <supportedFormFactor type="Small" />
-                <supportedFormFactor type="Large" />
+                <supportedFormFactor type="Small"/>
+                <supportedFormFactor type="Large"/>
             </supportedFormFactors>
         </targetConfig>
         <targetConfig targets="lightning__FlowScreen">

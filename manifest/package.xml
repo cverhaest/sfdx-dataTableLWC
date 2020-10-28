@@ -6,6 +6,10 @@
 		<name>ApexClass</name>
 	</types>
 	<types>
+		<members>Account.Activity__c</members>
+		<name>CustomField</name>
+	</types>
+	<types>
 		<members>Refresh_Event__e</members>
 		<name>CustomObject</name>
 	</types>
