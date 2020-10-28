@@ -109,13 +109,16 @@ export default class UserTerritoriesDataTable_LWC extends LightningElement {
                             variant: 'success',
                         }),
                     );
+
+                    // Refresh the component
+                    this.getUserTerritoriesListFct();
                 }
                 else{
                     // Show warning message
                     this.dispatchEvent(
                         new ShowToastEvent({
                             title: 'Warning',
-                            message: 'Selected Territories cannot be assigned to this Account',
+                            message: 'Selected Territory cannot be assigned to this Account',
                             variant: 'warning',
                         }),
                     );                    
@@ -137,9 +140,9 @@ export default class UserTerritoriesDataTable_LWC extends LightningElement {
         }
     }
     
-    // Refresh Timeline using "Platform Events"
-    // Each time a child record is added, updated or removed a process builder should
-    // create an Event to refresh the timeline 
+    // Refresh the "User Territories" component using "Platform Events"
+    // Only usefull in an Asynchronous mode
+    // Create an Event to refresh the compopent 
     // Client-side function that invokes the subscribe method on the
     // empApi component.
     // https://developer.salesforce.com/docs/component-library/bundle/lightning-emp-api/documentation

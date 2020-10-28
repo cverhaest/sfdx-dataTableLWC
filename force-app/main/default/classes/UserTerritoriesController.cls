@@ -1,5 +1,9 @@
 public with sharing class UserTerritoriesController {
 
+    // *********************************************************************
+    // getUserTerritoriesList() method - Recover territories assigned to a
+    // User.
+    // *********************************************************************
     //@AuraEnabled(cacheable=true)
     //Do not use "cacheable" in order to be able to refresh the data
     @AuraEnabled
@@ -28,6 +32,10 @@ public with sharing class UserTerritoriesController {
         return response;
     }
 
+    // *********************************************************************
+    // addUserTerritories() method - Check and assign selected territories
+    // to an Account record.
+    // *********************************************************************
     @AuraEnabled
     public static boolean addUserTerritories(Id AccountId, List<Id> lTerritories, boolean checkRules) {
         system.debug('### CVER - UserTerritoriesController - addUserTerritoriesToAccount - START - AccountId:' + AccountId + ' - lTerritories.size():' + lTerritories.size());
@@ -40,7 +48,10 @@ public with sharing class UserTerritoriesController {
         }
 
         if(bResponse){
-            addUserTerritoriesAsync(AccountId, lTerritories);
+            // Synchronous mode
+            addUserTerritoriesSync(AccountId, lTerritories);
+            // Asynchronous mode
+            //addUserTerritoriesAsync(AccountId, lTerritories);
             return true;
         }
         else{
@@ -48,6 +59,10 @@ public with sharing class UserTerritoriesController {
         }
     }    
 
+    // *********************************************************************
+    // checkTerritories() method - Check that selected territories respect
+    // related territory assigment rules.
+    // *********************************************************************
     // JUST AS AN EXAMPLE HERE, SHOULD BE BASED ON RuleTerritory2Association, ObjectTerritory2AssignmentRule, ObjectTerritory2AssignmentRuleItem objects
     // https://developer.salesforce.com/docs/atlas.en-us.api.meta/api/sforce_api_erd_territory2.htm
     static boolean checkTerritories(Id AccountId, List<Id> lTerritories) {
@@ -79,6 +94,38 @@ public with sharing class UserTerritoriesController {
         return bResponse;
     }     
 
+    // *********************************************************************
+    // addUserTerritoriesSync() method - Assign selected territories to and
+    // Account record in a synchronous mode.
+    // *********************************************************************
+    static void addUserTerritoriesSync(Id AccountId, List<Id> lTerritories) {
+        system.debug('### CVER - UserTerritoriesController - addUserTerritoriesSync - START - AccountId:' + AccountId + ' - lTerritories.size():' + lTerritories.size());
+
+        List<ObjectTerritory2Association> lObjectTerritoriesToInsert = new List<ObjectTerritory2Association>();
+        
+        if(!lTerritories.isEmpty()){
+            for(Id oTerritory:lTerritories){
+                system.debug('### CVER - UserTerritoriesController - addUserTerritoriesSync - oTerritory:' + oTerritory);
+
+                lObjectTerritoriesToInsert.add(
+                    new ObjectTerritory2Association(
+                        ObjectId = AccountId,
+                        Territory2Id = oTerritory,
+                        AssociationCause = 'Territory2Manual'
+                    )
+                );
+            }
+
+            if(!lObjectTerritoriesToInsert.isEmpty()){
+                insert lObjectTerritoriesToInsert;
+            }
+        }
+    }      
+
+    // *********************************************************************
+    // addUserTerritoriesAsync() method - Assign selected territories to and
+    // Account record in an asynchronous mode.
+    // *********************************************************************
     @future
     static void addUserTerritoriesAsync(Id AccountId, List<Id> lTerritories) {
         system.debug('### CVER - UserTerritoriesController - addUserTerritoriesAsync - START - AccountId:' + AccountId + ' - lTerritories.size():' + lTerritories.size());
@@ -106,10 +153,10 @@ public with sharing class UserTerritoriesController {
                 Database.SaveResult oResult = EventBus.publish(oRefreshEvent);
  
                 if (oResult.isSuccess()) {
-                    System.debug('### CVER - UserTerritoriesController - Successfully published event.');
+                    System.debug('### CVER - UserTerritoriesController - addUserTerritoriesAsync - Successfully published event.');
                 } else {
                     for(Database.Error err:oResult.getErrors()) {
-                        System.debug('### CVER - UserTerritoriesController -  Error returned: ' + err.getStatusCode() + ' - ' + err.getMessage());
+                        System.debug('### CVER - UserTerritoriesController -  addUserTerritoriesAsync - Error returned: ' + err.getStatusCode() + ' - ' + err.getMessage());
                     }
                 }    
             }
