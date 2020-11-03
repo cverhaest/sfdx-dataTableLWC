@@ -1,4 +1,4 @@
-public with sharing class UserTerritoriesController {
+public without sharing class UserTerritoriesController {
 
     // *********************************************************************
     // getUserTerritoriesList() method - Recover territories assigned to a
@@ -87,6 +87,22 @@ public with sharing class UserTerritoriesController {
                     bResponse = true;    
                 }
             }
+            /*
+            // For CMA
+            // Recover Territory Information
+            list<Territory2> lTerritory2 = [SELECT Id, DeveloperName, query__c FROM Territory2 WHERE Id IN :lTerritories];
+
+            for(Territory2 oTerritory2:lTerritory2){
+                system.debug('### CVER - UserTerritoriesController - checkTerritories - oTerritory2.DeveloperName:' + oTerritory2.DeveloperName);
+
+                String sQuery = 'SELECT Id FROM Account where id= :AccountId ';
+                sQuery += oTerritory2.query__c!=null?' AND ' + oTerritory2.query__c:'';
+
+                // Should be bulkified
+                system.debug(' ### CVER - UserTerritoriesController - checkTerritories - sQuery:' + sQuery);
+                List<sObject> sobjList = Database.query(sQuery);
+                return (sobjList.size() > 0);
+            }*/            
         }
         
         system.debug('### CVER - UserTerritoriesController - checkTerritories - bResponse:' + bResponse);
